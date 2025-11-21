@@ -1,91 +1,710 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-      <!-- Google Search Console Verification -->
-    <meta name="google-site-verification" content="uSadfgKC_9qGkC2A_26ZQujHDdHkZdDXTS8Uzban75Q" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- 기본 SEO -->
-  <title>Lee Downloader - 유튜브 영상 다운로드 프로그램</title>
-  <meta name="description" content="Lee Downloader는 고화질 유튜브 영상을 쉽고 빠르게 다운로드할 수 있는 Windows용 프로그램입니다. 안전하고 빠른 최신 버전을 무료로 다운로드하세요.">
-  <meta name="keywords" content="Lee Downloader, 리다운로더, 유튜브 다운로드, 유튜브 영상 저장, video downloader, downloader exe">
-  <meta name="author" content="CG91">
-
-  <!-- SNS 미리보기(OG 태그) -->
-  <meta property="og:title" content="Lee Downloader - 유튜브 다운로드 프로그램" />
-  <meta property="og:description" content="고화질 유튜브 영상을 빠르고 쉽게 다운로드하세요." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://two5220.github.io/lee/" />
-  <meta property="og:image" content="https://two5220.github.io/lee/banner.png" />
-
-  <!-- 파비콘 -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-
-  <!-- 스타일 -->
+  <meta charset="UTF-8">
+  <title>Lee Downloader v1.0 - CG91</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Lee Downloader v1.0 - CG91가 만든 YouTube 및 다양한 사이트용 영상/음원 다운로드 프로그램 (Windows 전용)">
   <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #020617;
+      --card: #020617;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59,130,246,0.15);
+      --accent-strong: #2563eb;
+      --text: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border: #1f2937;
+      --danger: #f97373;
+      --radius-lg: 18px;
+      --shadow-soft: 0 18px 45px rgba(0,0,0,0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f5f7fa;
-      padding: 0;
       margin: 0;
-      color: #222;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at top left, #1f2937, #020617 55%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
     }
-    header {
-      background: #2563eb;
-      color: white;
-      padding: 24px;
-      text-align: center;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 14px 22px;
-      font-size: 18px;
-      background: #2563eb;
-      color: white;
-      border-radius: 10px;
+
+    a {
+      color: var(--accent);
       text-decoration: none;
-      transition: 0.2s;
     }
-    .btn:hover { background: #1d4ed8; }
-    .warn {
-      background: #fff8e1;
-      border: 1px solid #ffcc00;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 20px;
-      font-size: 15px;
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* 헤더 & 네비게이션 */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: radial-gradient(circle at 30% 20%, #facc15, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .brand-text-main {
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+    }
+
+    .nav-links a:hover {
+      border-color: rgba(148,163,184,0.7);
+      color: var(--text);
+      text-decoration: none;
+      background: rgba(15,23,42,0.9);
+    }
+
+    /* 히어로 영역 */
+    .hero {
+      border-radius: 26px;
+      padding: 28px 24px 24px;
+      background: radial-gradient(circle at top left, rgba(56,189,248,0.18), transparent 60%),
+                  radial-gradient(circle at top right, rgba(59,130,246,0.3), transparent 55%),
+                  linear-gradient(135deg, #020617, #020617 55%, #020617);
+      border: 1px solid rgba(148,163,184,0.35);
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 26px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at bottom right, rgba(15,118,110,0.35), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+
+    .pill span {
+      font-size: 11px;
+    }
+
+    .hero-title {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.6fr);
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-card {
+      background: rgba(15,23,42,0.9);
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 16px;
+      border: 1px solid rgba(148,163,184,0.35);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-card h3 {
+      font-size: 13px;
+      margin: 0 0 8px;
+      color: #e5e7eb;
+    }
+
+    .hero-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .hero-list li {
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+      padding: 3px 0;
+    }
+
+    .hero-list li span.emoji {
+      width: 18px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .hero-warning {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #fca5a5;
+    }
+
+    /* 공통 카드 스타일 */
+    .card {
+      background: rgba(15,23,42,0.95);
+      border-radius: var(--radius-lg);
+      padding: 20px 18px 18px;
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 38px rgba(0,0,0,0.6);
+      margin-bottom: 22px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* 버튼 & 다운로드 */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      color: #e5e7eb;
+      background: #111827;
+      border: 1px solid rgba(148,163,184,0.4);
+      transition: background 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn span.icon {
+      font-size: 16px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      border-color: transparent;
+      box-shadow: 0 12px 30px rgba(37,99,235,0.45);
+    }
+
+    .btn-outline {
+      background: rgba(15,23,42,0.95);
+    }
+
+    .btn-ghost {
+      background: rgba(15,23,42,0.7);
+      border-style: dashed;
+      border-color: rgba(148,163,184,0.6);
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .btn:hover {
+      text-decoration: none;
+      transform: translateY(-1px);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.7);
+      border-color: rgba(191,219,254,0.9);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #60a5fa, var(--accent-strong));
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15,23,42,0.95);
+      color: var(--text);
+    }
+
+    .download-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .download-note strong {
+      color: #e5e7eb;
+    }
+
+    /* SmartScreen 안내 카드 */
+    .smartscreen-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(30,64,175,0.4);
+      border: 1px solid rgba(191,219,254,0.9);
+      font-size: 11px;
+      color: #e5e7eb;
+      margin-bottom: 10px;
+    }
+
+    .alert-soft {
+      background: rgba(30,64,175,0.35);
+      border: 1px solid rgba(129,140,248,0.8);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: #e5e7eb;
+      margin-bottom: 10px;
+    }
+
+    .alert-soft strong {
+      color: #bfdbfe;
+    }
+
+    .step-list {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0;
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .step-list li {
+      position: relative;
+      padding-left: 26px;
+      margin: 4px 0;
+    }
+
+    .step-list li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(37,99,235,0.95);
+      color: #e5e7eb;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 기타 섹션 */
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+      gap: 18px;
+    }
+
+    ul.feature-list {
+      padding-left: 18px;
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    ul.feature-list li {
+      margin: 3px 0;
+    }
+
+    .mono-box {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      background: #020617;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid #1f2937;
+      color: #9ca3af;
+      margin-top: 6px;
+      white-space: pre-line;
+    }
+
+    footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid #1f2937;
+      font-size: 11px;
+      color: #6b7280;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    footer a {
+      color: #93c5fd;
+    }
+
+    /* 반응형 */
+    @media (max-width: 768px) {
+      .hero-grid,
+      .two-col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero {
+        padding: 22px 16px 18px;
+      }
+
+      .card {
+        padding: 18px 14px 16px;
+      }
+
+      .top-nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
     }
   </style>
 </head>
-
 <body>
-  <header>Lee Downloader (v1.0)</header>
+  <div class="page">
 
-  <div class="container">
-    <h2>윈도우용 유튜브 다운로드 프로그램</h2>
-    <p>Lee Downloader는 <b>고화질 유튜브 영상 다운로드</b>를 쉽게 할 수 있도록 제작된 안전한 프로그램입니다.</p>
+    <!-- 상단 헤더 / 네비게이션 -->
+    <header class="top-nav">
+      <div class="brand">
+        <div class="brand-logo">⬇️</div>
+        <div>
+          <div class="brand-text-main">Lee Downloader v1.0</div>
+          <div class="brand-text-sub">Windows용 영상·음원 다운로더 · 제작자 CG91</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#download">다운로드</a>
+        <a href="#howto">사용 방법</a>
+        <a href="#smartscreen">SmartScreen 안내</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://github.com/two5220/lee" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+    </header>
 
-    <h3>📥 최신 버전 다운로드</h3>
-    <a class="btn" href="YOUR_DOWNLOAD_LINK">💾 Lee Downloader v1.0 다운로드</a>
+    <!-- 히어로 / 메인 요약 -->
+    <section class="hero">
+      <div class="badge-row">
+        <span class="pill"><span>✅</span><span>버전 1.0 · 안정 릴리즈</span></span>
+        <span class="pill"><span>🪟</span><span>Windows 10 / 11 (64bit)</span></span>
+        <span class="pill"><span>🧩</span><span>yt-dlp 기반 GUI</span></span>
+      </div>
 
-    <div class="warn">
-      ⚠️ <b>SmartScreen 안내</b><br>
-      처음 실행할 때 Microsoft SmartScreen이 뜰 수 있습니다.<br>
-      이는 새로 배포된 프로그램에서 흔히 발생하는 일반적인 현상이며,  
-      <b>“추가 정보” → “실행”</b>을 누르면 정상 설치됩니다.
-    </div>
+      <h1 class="hero-title">링크만 붙여넣으면 끝, <br>Lee Downloader v1.0</h1>
+      <p class="hero-sub">
+        YouTube 및 다양한 사이트에서 영상과 음원을 <strong>최고 화질</strong>로 안전하게 다운로드할 수 있는
+        Windows 전용 도구입니다. CG91가 개인적으로 개발한 무료 프로그램입니다.
+      </p>
+
+      <div class="hero-grid">
+        <div class="hero-card">
+          <h3>✨ 주요 기능</h3>
+          <ul class="hero-list">
+            <li><span class="emoji">🎬</span><span>YouTube 포함 다양한 사이트의 영상 다운로드</span></li>
+            <li><span class="emoji">🎧</span><span>MP3 추출 · 음악만 따로 저장 (오디오 모드)</span></li>
+            <li><span class="emoji">🧷</span><span>사이트별 / 채널별 폴더 자동 정리</span></li>
+            <li><span class="emoji">💬</span><span>자막 자동 다운로드 및 영상에 삽입 (선택)</span></li>
+            <li><span class="emoji">🌐</span><span>한국어 / English UI 지원</span></li>
+          </ul>
+          <div class="hero-warning">
+            ⚠️ <strong>SmartScreen 경고가 뜰 수 있지만, 악성 코드 없이 깨끗한 파일</strong>입니다.<br>
+            아래 <a href="#smartscreen">SmartScreen 안내</a>를 꼭 읽어 주세요.
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <h3>⬇️ 바로 다운로드</h3>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="https://github.com/two5220/lee/releases/download/v1.0/LeeDownloader.exe">
+              <span class="icon">💾</span>
+              <span>Lee Downloader v1.0 (EXE)</span>
+            </a>
+            <a class="btn btn-outline" href="https://github.com/two5220/lee/releases/download/v1.0/LeeDownloader.zip">
+              <span class="icon">📦</span>
+              <span>전체 패키지 ZIP</span>
+            </a>
+          </div>
+          <p class="download-note">
+            • 설치가 익숙하다면 <strong>EXE 단독 파일</strong>만 받아 실행하면 됩니다.<br>
+            • <strong>ZIP 패키지</strong>에는 설명 파일과 함께 EXE가 포함되어 있습니다.<br>
+          </p>
+          <a class="btn btn-ghost" href="https://github.com/two5220/lee/releases/tag/v1.0" target="_blank" rel="noopener noreferrer">
+            <span class="icon">🔎</span>
+            <span>GitHub 릴리즈 페이지에서 자세히 보기</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 다운로드 섹션 -->
+    <section id="download" class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">다운로드 · 설치 안내</div>
+          <div class="card-sub">Windows 10 / 11 (64bit) 환경에서만 지원됩니다.</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3 style="font-size:14px;margin:4px 0 6px;">1. 파일 선택</h3>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="https://github.com/two5220/lee/releases/download/v1.0/LeeDownloader.exe">
+              <span class="icon">💾</span>
+              <span>EXE 단독 실행 파일</span>
+            </a>
+            <a class="btn btn-outline" href="https://github.com/two5220/lee/releases/download/v1.0/LeeDownloader.zip">
+              <span class="icon">📦</span>
+              <span>전체 패키지 ZIP</span>
+            </a>
+          </div>
+          <p class="download-note">
+            • EXE만 받아도 실행 가능하며, 설치 과정 없이 바로 실행되는 포터블 방식입니다.<br>
+            • 압축이 익숙하다면 ZIP을 받아서 원하는 폴더에 풀고 EXE를 실행하세요.
+          </p>
+
+          <h3 style="font-size:14px;margin:10px 0 4px;">2. SmartScreen 경고</h3>
+          <p class="download-note">
+            개인 개발자가 배포하는 새로운 실행 파일은 Windows에서 <strong>SmartScreen 경고</strong>가 뜰 수 있습니다.<br>
+            아래 <a href="#smartscreen">SmartScreen 안내</a>를 참고해, 파일을 신뢰할 경우에만 실행을 진행해 주세요.
+          </p>
+        </div>
+
+        <div>
+          <h3 style="font-size:14px;margin:4px 0 6px;">3. 기본 사용 흐름</h3>
+          <ol class="step-list" style="margin-top:2px;">
+            <li>프로그램을 실행합니다. (최초 실행 시 잠시 로딩될 수 있습니다.)</li>
+            <li>YouTube 등에서 영상/재생목록 URL을 복사해 상단 입력창에 붙여넣습니다.</li>
+            <li>저장 폴더, 화질, 자막 여부 등을 설정합니다.</li>
+            <li><strong>“다운로드 시작”</strong> 버튼을 눌러 완료까지 기다립니다.</li>
+            <li>설정에 따라 완료 후 자동으로 저장 폴더가 열립니다.</li>
+          </ol>
+          <div class="mono-box">
+사용 중 문제나 개선 아이디어가 있다면  
+GitHub Issues 또는 릴리즈 페이지를 통해 남겨 주세요.  
+(버그 제보 시 Windows 버전 / 화면 캡처를 함께 주시면 큰 도움이 됩니다.)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 사용 방법 섹션 -->
+    <section id="howto" class="card">
+      <div class="card-header">
+        <div class="card-title">주요 기능 & 사용 팁</div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3 style="font-size:14px;margin:4px 0 4px;">주요 기능</h3>
+          <ul class="feature-list">
+            <li>여러 개의 URL을 한 번에 붙여넣고 일괄 다운로드</li>
+            <li>최고 화질(최대 4K) 우선 선택 · 원하는 해상도 지정 가능</li>
+            <li>오디오만 추출(MP3) 모드 지원</li>
+            <li>사이트/채널/업로더 기준으로 자동 폴더 분류</li>
+            <li>자막 다운로드 및 영상 내 삽입 (ko / en 등 언어 선택)</li>
+            <li>재생목록에서 원하는 구간만 선택 다운로드 (예: 1-10, 1,3,5)</li>
+          </ul>
+
+          <h3 style="font-size:14px;margin:10px 0 4px;">추천 사용 예시</h3>
+          <ul class="feature-list">
+            <li>강의 영상/오프라인 시청용 백업</li>
+            <li>음악 플레이리스트를 MP3로 내려받기</li>
+            <li>자막 포함 학습용 영상 저장</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 style="font-size:14px;margin:4px 0 4px;">주의 사항</h3>
+          <ul class="feature-list">
+            <li>이 프로그램은 <strong>개인적인 백업/스터디 용도</strong>만을 위해 제공됩니다.</li>
+            <li>저작권이 있는 콘텐츠는 각 사이트의 약관을 반드시 준수해야 합니다.</li>
+            <li>상업적 목적 또는 불법 공유 용도로 사용하지 마세요.</li>
+            <li>CG91는 이 프로그램 사용으로 인해 발생하는 법적 문제에 대해 책임을 지지 않습니다.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SmartScreen 안내 -->
+    <section id="smartscreen" class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Windows SmartScreen 경고 안내</div>
+          <div class="card-sub">“SmartScreen 경고가 뜰 수 있지만 안전합니다” – 왜 이런 창이 뜨는지, 어떻게 처리해야 하는지 정리했습니다.</div>
+        </div>
+      </div>
+
+      <div class="smartscreen-badge">
+        <span>🛡️</span>
+        <span>Microsoft Defender SmartScreen 관련 안내</span>
+      </div>
+
+      <div class="alert-soft">
+        <strong>SmartScreen 경고는 “신뢰할 만한 서명이 없는 새 실행 파일”을 조심하라는 의미</strong>입니다.<br>
+        Lee Downloader v1.0은 CG91가 직접 개발한 개인용 도구이며, 악성 코드나 광고 설치 파일을 포함하지 않습니다.
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3 style="font-size:14px;margin:6px 0 4px;">경고 창이 뜰 때 실행 방법</h3>
+          <ol class="step-list">
+            <li>경고 화면에서 <strong>“추가 정보”</strong>를 클릭합니다.</li>
+            <li>아래쪽에 나타나는 <strong>“실행”</strong> 버튼을 눌러 실행을 진행합니다.</li>
+            <li>회사/기관 PC에서는 보안 정책상 실행이 차단될 수 있습니다. 이 경우 관리자에게 문의해 주세요.</li>
+          </ol>
+        </div>
+
+        <div>
+          <h3 style="font-size:14px;margin:6px 0 4px;">조금 더 안심할 수 있는 이유</h3>
+          <ul class="feature-list">
+            <li>프로그램 전체 소스 코드는 GitHub에 공개되어 있습니다.</li>
+            <li>설치 마법사 없이, EXE 하나만 실행하는 <strong>포터블 방식</strong>입니다.</li>
+            <li>추가 툴바·광고 설치 프로그램을 포함하지 않습니다.</li>
+            <li>사용을 중단하고 싶다면, 받은 폴더에서 EXE 파일만 삭제하면 끝입니다.</li>
+          </ul>
+          <p class="download-note" style="margin-top:6px;">
+            그래도 조금이라도 마음이 불편하다면, <strong>실행하지 않는 것</strong>이 가장 안전한 선택입니다.<br>
+            궁금한 점이 있다면 GitHub 이슈를 통해 질문을 남겨 주세요.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="card">
+      <div class="card-header">
+        <div class="card-title">자주 묻는 질문 (FAQ)</div>
+      </div>
+
+      <h3 style="font-size:14px;margin:4px 0;">Q. 무료인가요?</h3>
+      <p class="card-sub" style="margin:2px 0 8px;">
+        네. Lee Downloader v1.0은 CG91가 취미/연구 목적으로 개발한 무료 프로그램입니다.
+      </p>
+
+      <h3 style="font-size:14px;margin:4px 0;">Q. 어디에 설치되나요?</h3>
+      <p class="card-sub" style="margin:2px 0 8px;">
+        설치 과정 없이 EXE를 실행하는 포터블 프로그램입니다. 원하는 폴더에 두고 사용하다가, 필요 없으면 폴더에서 삭제하면 됩니다.
+      </p>
+
+      <h3 style="font-size:14px;margin:4px 0;">Q. 업데이트는 어떻게 되나요?</h3>
+      <p class="card-sub" style="margin:2px 0 8px;">
+        새로운 버전이 나오면 GitHub Releases와 이 페이지에 버전 정보가 안내될 예정입니다.
+        최신 버전을 다시 다운로드해 기존 EXE를 교체하면 됩니다.
+      </p>
+
+      <h3 style="font-size:14px;margin:4px 0;">Q. 회사/학교 PC에서 실행이 막혀요.</h3>
+      <p class="card-sub" style="margin:2px 0 8px;">
+        조직용 PC는 보안 정책에 따라 개인이 만든 실행 파일 실행이 차단될 수 있습니다.
+        이 경우 관리자에게 허용 요청을 하거나, 개인 PC에서 사용해 주세요.
+      </p>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+      <div>
+        © 2025 <strong>CG91</strong>. Lee Downloader v1.0 · All rights reserved.
+      </div>
+      <div>
+        🔗 <a href="https://github.com/two5220/lee" target="_blank" rel="noopener noreferrer">GitHub 저장소</a> ·
+        <a href="https://github.com/two5220/lee/releases/tag/v1.0" target="_blank" rel="noopener noreferrer"> 릴리즈 페이지</a>
+      </div>
+    </footer>
   </div>
 </body>
 </html>
