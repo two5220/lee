@@ -45,7 +45,7 @@
       text-decoration: underline;
     }
 
-    /* 전체 레이아웃 (가운데 페이지 + 좌우 사이드 배너) */
+    /* 전체 레이아웃 */
     .layout {
       display: flex;
       justify-content: center;
@@ -61,7 +61,7 @@
     .side-banner {
       width: 140px;
       flex-shrink: 0;
-      display: none; /* 기본: 모바일에서 숨김 */
+      display: none;
     }
 
     .side-banner-inner {
@@ -69,7 +69,7 @@
       top: 16px;
     }
 
-    /* 헤더 & 네비게이션 */
+    /* 헤더 */
     .top-nav {
       display: flex;
       align-items: center;
@@ -131,9 +131,10 @@
     .hero {
       border-radius: 26px;
       padding: 28px 24px 24px;
-      background: radial-gradient(circle at top left, rgba(56,189,248,0.18), transparent 60%),
-                  radial-gradient(circle at top right, rgba(59,130,246,0.3), transparent 55%),
-                  linear-gradient(135deg, #020617, #020617 55%, #020617);
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,0.18), transparent 60%),
+        radial-gradient(circle at top right, rgba(59,130,246,0.3), transparent 55%),
+        linear-gradient(135deg, #020617, #020617 55%, #020617);
       border: 1px solid rgba(148,163,184,0.35);
       box-shadow: var(--shadow-soft);
       margin-bottom: 26px;
@@ -182,12 +183,13 @@
       margin-bottom: 6px;
       position: relative;
       z-index: 1;
+      line-height: 1.3;
     }
 
     .hero-sub {
       font-size: 14px;
       color: var(--text-muted);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       position: relative;
       z-index: 1;
     }
@@ -201,15 +203,15 @@
     }
 
     .hero-card {
-      background: rgba(15,23,42,0.9);
-      border-radius: var(--radius-lg);
-      padding: 14px 14px 16px;
+      background: rgba(15,23,42,0.96);
+      border-radius: 22px;
+      padding: 16px 16px 18px;
       border: 1px solid rgba(148,163,184,0.35);
       backdrop-filter: blur(10px);
     }
 
     .hero-card h3 {
-      font-size: 13px;
+      font-size: 14px;
       margin: 0 0 8px;
       color: #e5e7eb;
     }
@@ -226,7 +228,7 @@
       display: flex;
       gap: 6px;
       align-items: flex-start;
-      padding: 3px 0;
+      padding: 2px 0;
     }
 
     .hero-list li span.emoji {
@@ -241,41 +243,31 @@
       color: #fca5a5;
     }
 
-    /* 공통 카드 스타일 */
-    .card {
-      background: rgba(15,23,42,0.95);
-      border-radius: var(--radius-lg);
-      padding: 20px 18px 18px;
-      border: 1px solid var(--border);
-      box-shadow: 0 16px 38px rgba(0,0,0,0.6);
-      margin-bottom: 22px;
-    }
-
-    .card-header {
+    /* 히어로 왼쪽 – 기능 + 다운로드 */
+    .hero-main-inner {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 12px;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .card-title {
-      font-size: 17px;
-      font-weight: 600;
+    .hero-download-box {
+      margin-top: 8px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(30,64,175,0.7);
     }
 
-    .card-sub {
+    .hero-download-title {
       font-size: 13px;
-      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 6px;
     }
 
-    /* 버튼 & 다운로드 */
     .btn-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 8px;
-      margin-bottom: 8px;
+      margin-top: 4px;
+      margin-bottom: 6px;
     }
 
     .btn {
@@ -293,7 +285,8 @@
       color: #e5e7eb;
       background: #111827;
       border: 1px solid rgba(148,163,184,0.4);
-      transition: background 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      transition: background 0.15s ease, transform 0.05s ease,
+                  box-shadow 0.15s ease, border-color 0.15s ease;
     }
 
     .btn span.icon {
@@ -332,7 +325,7 @@
     .download-note {
       font-size: 12px;
       color: var(--text-muted);
-      margin-top: 6px;
+      margin-top: 4px;
       line-height: 1.5;
     }
 
@@ -340,7 +333,90 @@
       color: #e5e7eb;
     }
 
-    /* SmartScreen 안내 카드 */
+    /* 히어로 오른쪽 – 제작자 한 마디 */
+    .hero-maker {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-maker::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.28), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(15,23,42,0.9), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .hero-maker-inner {
+      position: relative;
+      display: flex;
+      align-items: center; /* 창 크기 변화에도 세로 정렬 안정 */
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .maker-photo {
+      flex-shrink: 0;
+    }
+
+    .maker-photo img {
+      width: 70px;
+      height: 70px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 1px solid rgba(191,219,254,0.9);
+      box-shadow: 0 10px 25px rgba(15,23,42,0.9);
+      background: #020617;
+    }
+
+    .maker-text {
+      font-size: 12px;
+      color: #e5e7eb;
+      line-height: 1.55;
+      white-space: pre-line; /* 줄바꿈 그대로 유지 */
+    }
+
+    .maker-contact {
+      margin-top: 10px;
+      font-size: 12px;  /* 11px → 12px 로 키움 */
+      color: #9ca3af;
+    }
+
+    .maker-contact strong {
+      color: #e5e7eb;
+    }
+
+    /* 공통 카드 / 섹션 */
+    .card {
+      background: rgba(15,23,42,0.95);
+      border-radius: var(--radius-lg);
+      padding: 20px 18px 18px;
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 38px rgba(0,0,0,0.6);
+      margin-bottom: 22px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
     .smartscreen-badge {
       display: inline-flex;
       align-items: center;
@@ -400,7 +476,6 @@
       justify-content: center;
     }
 
-    /* 기타 섹션 */
     .two-col {
       display: grid;
       grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
@@ -452,7 +527,7 @@
       margin-top: 4px;
     }
 
-    /* 가로형 쿠팡 배너 섹션 */
+    /* 가로 쿠팡 카드 */
     .coupang-wide-card {
       display: flex;
       justify-content: center;
@@ -460,7 +535,6 @@
       padding: 16px 10px 12px;
     }
 
-    /* 반응형 */
     @media (min-width: 1100px) {
       .side-banner {
         display: block;
@@ -503,7 +577,7 @@
 <body>
 <div class="layout">
 
-  <!-- 왼쪽 세로 쿠팡 배너 (이미 사용 중이면 그대로 두고, 필요 없으면 이 div 삭제해도 됨) -->
+  <!-- 왼쪽 세로 쿠팡 배너 -->
   <aside class="side-banner">
     <div class="side-banner-inner">
       <script src="https://ads-partners.coupang.com/g.js"></script>
@@ -523,7 +597,7 @@
   <!-- 메인 페이지 -->
   <div class="page">
 
-    <!-- 상단 헤더 / 네비게이션 -->
+    <!-- 상단 헤더 -->
     <header class="top-nav">
       <div class="brand">
         <div class="brand-logo">⬇️</div>
@@ -535,14 +609,13 @@
       <nav class="nav-links">
         <a href="#download">다운로드</a>
         <a href="#howto">사용 방법</a>
-        <a href="#update">업데이트 안내</a>
         <a href="#smartscreen">SmartScreen 안내</a>
         <a href="#faq">FAQ</a>
         <a href="https://github.com/two5220/lee" target="_blank" rel="noopener noreferrer">GitHub</a>
       </nav>
     </header>
 
-    <!-- 히어로 / 메인 요약 -->
+    <!-- 히어로 / 상단 요약 -->
     <section class="hero" id="download">
       <div class="badge-row">
         <span class="pill"><span>✅</span><span>버전 1.0 · 안정 릴리즈</span></span>
@@ -550,48 +623,80 @@
         <span class="pill"><span>🧩</span><span>yt-dlp 기반 GUI</span></span>
       </div>
 
-      <h1 class="hero-title">링크만 붙여넣으면 끝, <br>Lee Downloader v1.0</h1>
+      <h1 class="hero-title">
+        링크만 붙여넣으면 끝,<br>
+        Lee Downloader v1.0
+      </h1>
       <p class="hero-sub">
         YouTube 및 다양한 사이트에서 영상과 음원을 <strong>최고 화질</strong>로 안전하게 다운로드할 수 있는
         Windows 전용 도구입니다. CG91가 개인적으로 개발한 무료 프로그램입니다.
       </p>
 
       <div class="hero-grid">
+        <!-- 왼쪽: 주요 기능 + SmartScreen + 다운로드 -->
         <div class="hero-card">
-          <h3>✨ 주요 기능</h3>
-          <ul class="hero-list">
-            <li><span class="emoji">🎬</span><span>YouTube 포함 다양한 사이트의 영상 다운로드</span></li>
-            <li><span class="emoji">🎧</span><span>MP3 추출 · 음악만 따로 저장 (오디오 모드)</span></li>
-            <li><span class="emoji">🧷</span><span>사이트별 / 채널별 폴더 자동 정리</span></li>
-            <li><span class="emoji">💬</span><span>자막 자동 다운로드 및 영상에 삽입 (선택)</span></li>
-            <li><span class="emoji">🌐</span><span>한국어 / English UI 지원</span></li>
-          </ul>
-          <div class="hero-warning">
-            ⚠️ <strong>SmartScreen 경고가 뜰 수 있지만, 악성 코드 없이 깨끗한 파일</strong>입니다.<br>
-            아래 <a href="#smartscreen">SmartScreen 안내</a>를 꼭 읽어 주세요.
+          <div class="hero-main-inner">
+            <div>
+              <h3>✨ 주요 기능</h3>
+              <ul class="hero-list">
+                <li><span class="emoji">🎬</span><span>YouTube 포함 다양한 사이트의 영상 다운로드</span></li>
+                <li><span class="emoji">🎧</span><span>MP3 추출 · 음악만 따로 저장 (오디오 모드)</span></li>
+                <li><span class="emoji">🧷</span><span>사이트별 / 채널별 폴더 자동 정리</span></li>
+                <li><span class="emoji">💬</span><span>자막 자동 다운로드 및 영상에 삽입 (선택)</span></li>
+                <li><span class="emoji">🌐</span><span>한국어 / English UI 지원</span></li>
+              </ul>
+              <div class="hero-warning">
+                ⚠️ <strong>SmartScreen 경고가 뜰 수 있지만, 악성 코드 없이 깨끗한 파일</strong>입니다.<br>
+                아래 <a href="#smartscreen">SmartScreen 안내</a>를 꼭 읽어 주세요.
+              </div>
+            </div>
+
+            <div class="hero-download-box">
+              <div class="hero-download-title">⬇️ 바로 다운로드</div>
+              <div class="btn-row">
+                <a class="btn btn-primary" href="https://github.com/two5220/lee/releases/download/v1.0/LeeDownloader.exe">
+                  <span class="icon">💾</span>
+                  <span>Lee Downloader v1.0 (EXE)</span>
+                </a>
+                <a class="btn btn-outline" href="https://github.com/two5220/lee/releases/download/v1.0/LeeDownloader.zip">
+                  <span class="icon">📦</span>
+                  <span>전체 패키지 ZIP</span>
+                </a>
+              </div>
+              <p class="download-note">
+                • EXE만 받아도 실행 가능하며, 설치 과정 없이 바로 실행되는 포터블 방식입니다.<br>
+                • 압축이 익숙하다면 ZIP을 받아서 원하는 폴더에 풀고 EXE를 실행하세요.
+              </p>
+            </div>
           </div>
         </div>
 
-        <div class="hero-card">
-          <h3>⬇️ 바로 다운로드</h3>
-          <div class="btn-row">
-            <a class="btn btn-primary" href="https://github.com/two5220/lee/releases/download/v1.0/LeeDownloader.exe">
-              <span class="icon">💾</span>
-              <span>Lee Downloader v1.0 (EXE)</span>
-            </a>
-            <a class="btn btn-outline" href="https://github.com/two5220/lee/releases/download/v1.0/LeeDownloader.zip">
-              <span class="icon">📦</span>
-              <span>전체 패키지 ZIP</span>
-            </a>
+        <!-- 오른쪽: 제작자 한 마디 -->
+        <div class="hero-card hero-maker">
+          <h3>👨‍💻 제작자 한 마디</h3>
+          <div class="hero-maker-inner">
+            <div class="maker-photo">
+              <!-- GitHub RAW 아이콘 이미지 -->
+              <img src="https://raw.githubusercontent.com/two5220/lee/main/assets/lee_downloader.ico"
+                   alt="Lee Downloader 아이콘">
+            </div>
+            <div>
+              <div class="maker-text">
+다양한 프로그램 및 웹다운로더를
+사용해봤지만 너무나도 불편해
+직접 Lee Downloader를 제작했습니다.
+편리하고 다양한 꿀 기능이 많아요
+
+악성 코드 없는 100% 깨끗한 파일이니
+안심하고 사용해 주세요
+
+              </div>
+              <div class="maker-contact">
+                <!-- 이메일 강조 버전이 필요하면 strong으로 감싸도 됨 -->
+                프로그램 상단 배너 광고 문의 : <strong>two5220@gmail.com</strong>
+              </div>
+            </div>
           </div>
-          <p class="download-note">
-            • EXE만 받아도 실행 가능하며, 설치 과정 없이 바로 실행되는 포터블 방식입니다.<br>
-            • 압축이 익숙하다면 ZIP을 받아서 원하는 폴더에 풀고 EXE를 실행하세요.
-          </p>
-          <a class="btn btn-ghost" href="https://github.com/two5220/lee/releases/tag/v1.0" target="_blank" rel="noopener noreferrer">
-            <span class="icon">🔎</span>
-            <span>GitHub 릴리즈 페이지에서 자세히 보기</span>
-          </a>
         </div>
       </div>
     </section>
@@ -634,7 +739,7 @@
       </div>
     </section>
 
-    <!-- 👇 여기: 기존 “다운로드 · 설치 요약” 카드 대신 쿠팡 가로 배너 -->
+    <!-- 가로 쿠팡 배너 -->
     <section class="card coupang-wide-card">
       <div>
         <script src="https://ads-partners.coupang.com/g.js"></script>
@@ -648,35 +753,6 @@
             "tsource": ""
           });
         </script>
-      </div>
-    </section>
-
-    <!-- 업데이트 안내 -->
-    <section id="update" class="card">
-      <div class="card-header">
-        <div>
-          <div class="card-title">업데이트 안내 · 새 버전 알림</div>
-          <div class="card-sub">프로그램이 실행될 때 현재 버전을 확인하고, 새 버전이 있으면 알림창에서 홈페이지로 안내됩니다.</div>
-        </div>
-      </div>
-
-      <div class="two-col">
-        <div>
-          <h3 style="font-size:14px;margin:4px 0 4px;">프로그램 안에서 어떻게 동작하나요?</h3>
-          <ul class="feature-list">
-            <li>실행 시 GitHub 릴리즈 정보를 확인하여 최신 버전이 있는지 체크합니다.</li>
-            <li>새 버전이 발견되면, 리다운로더 홈페이지(이 페이지)로 이동할 수 있는 알림창이 뜹니다.</li>
-            <li>사용자는 이 페이지에서 최신 버전 EXE를 다시 다운로드해 기존 파일을 교체하면 됩니다.</li>
-          </ul>
-        </div>
-        <div>
-          <h3 style="font-size:14px;margin:4px 0 4px;">지금 최신 버전은?</h3>
-          <ul class="feature-list">
-            <li>현재 안정 버전: <strong>Lee Downloader v1.0</strong></li>
-            <li>새 버전이 나오면 이 페이지 상단 배지와 다운로드 버튼의 버전 표기가 함께 변경됩니다.</li>
-            <li>가끔 이 페이지를 즐겨찾기해서 직접 확인해도 좋습니다.</li>
-          </ul>
-        </div>
       </div>
     </section>
 
@@ -717,10 +793,6 @@
             <li>추가 툴바·광고 설치 프로그램을 포함하지 않습니다.</li>
             <li>사용을 중단하고 싶다면, 받은 폴더에서 EXE 파일만 삭제하면 끝입니다.</li>
           </ul>
-          <p class="download-note" style="margin-top:6px;">
-            그래도 조금이라도 마음이 불편하다면, <strong>실행하지 않는 것</strong>이 가장 안전한 선택입니다.<br>
-            궁금한 점이 있다면 GitHub 이슈를 통해 질문을 남겨 주세요.
-          </p>
         </div>
       </div>
     </section>
