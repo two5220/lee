@@ -353,7 +353,7 @@
     .hero-maker-inner {
       position: relative;
       display: flex;
-      align-items: center; /* 창 크기 변화에도 세로 정렬 안정 */
+      align-items: center;
       gap: 14px;
       margin-top: 8px;
     }
@@ -381,7 +381,7 @@
 
     .maker-contact {
       margin-top: 10px;
-      font-size: 12px;  /* 11px → 12px 로 키움 */
+      font-size: 12px;  /* 11px → 12px */
       color: #9ca3af;
     }
 
@@ -541,6 +541,7 @@
       }
     }
 
+    /* 태블릿 & 모바일 최적화 */
     @media (max-width: 768px) {
       .layout {
         padding: 16px 8px 28px;
@@ -566,10 +567,56 @@
 
       .nav-links {
         justify-content: flex-start;
+        flex-wrap: wrap;
       }
 
       .coupang-wide-card {
         padding: 12px 6px 10px;
+      }
+    }
+
+    /* 작은 모바일 (폰) 세부 튜닝 */
+    @media (max-width: 480px) {
+      .layout {
+        padding: 12px 6px 24px;
+      }
+
+      .hero {
+        padding: 18px 12px 16px;
+      }
+
+      .hero-title {
+        font-size: 24px;
+      }
+
+      .hero-sub {
+        font-size: 13px;
+      }
+
+      .badge-row {
+        gap: 6px;
+      }
+
+      .pill {
+        padding: 2px 8px;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .btn-row {
+        flex-direction: column;
+      }
+
+      .hero-maker-inner {
+        align-items: flex-start;
+      }
+
+      .maker-photo img {
+        width: 60px;
+        height: 60px;
       }
     }
   </style>
@@ -654,10 +701,12 @@
             <div class="hero-download-box">
               <div class="hero-download-title">⬇️ 바로 다운로드</div>
               <div class="btn-row">
+                <!-- EXE 다운로드 링크 (파일명 v1.0 반영) -->
                 <a class="btn btn-primary" href="https://github.com/two5220/lee/releases/download/v1.0/LeeDownloader_v1.0.exe">
                   <span class="icon">💾</span>
                   <span>Lee Downloader v1.0 (EXE)</span>
                 </a>
+                <!-- ZIP 다운로드 링크 (파일명 v1.0 반영) -->
                 <a class="btn btn-outline" href="https://github.com/two5220/lee/releases/download/v1.0/LeeDownloader_v1.0.zip">
                   <span class="icon">📦</span>
                   <span>전체 패키지 ZIP</span>
@@ -685,14 +734,15 @@
 다양한 프로그램 및 웹다운로더를
 사용해봤지만 너무나도 불편해
 직접 Lee Downloader를 제작했습니다.
-편리하고 다양한 꿀 기능이 많아요
+편리하고 쓸 기능이 많아요
 
 악성 코드 없는 100% 깨끗한 파일이니
 안심하고 사용해 주세요
 
+프로그램 상단 배너 광고 문의 :
+two5220@gmail.com
               </div>
               <div class="maker-contact">
-                <!-- 이메일 강조 버전이 필요하면 strong으로 감싸도 됨 -->
                 프로그램 상단 배너 광고 문의 : <strong>two5220@gmail.com</strong>
               </div>
             </div>
