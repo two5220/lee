@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lee Downloader Web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #020617;
+      --card: #020617;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59,130,246,0.2);
+      --accent-strong: #2563eb;
+      --text: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border: #1f2937;
+      --radius: 16px;
+      --shadow: 0 18px 40px rgba(0,0,0,0.6);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: radial-gradient(circle at top, #020617, #000000 60%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px 32px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .card {
+      background: rgba(15,23,42,0.96);
+      border-radius: 24px;
+      padding: 22px 20px 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .title-block p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .beta-badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(37,99,235,0.18);
+      border: 1px solid rgba(96,165,250,0.8);
+      color: #bfdbfe;
+      white-space: nowrap;
+    }
+
+    .hint {
+      margin-bottom: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .list-header {
+      display: grid;
+      grid-template-columns: minmax(0, 2.4fr) minmax(0, 1.1fr) auto;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      padding: 0 4px;
+    }
+
+    .rows {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: minmax(0, 2.4fr) minmax(0, 1.1fr) auto;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #020617;
+      border: 1px solid #1f2937;
+      align-items: center;
+    }
+
+    .row input[type="text"] {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .row input[type="text"]::placeholder {
+      color: #4b5563;
+    }
+
+    .row select {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .row-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 11px;
+      color: var(--text-muted);
+      user-select: none;
+    }
+
+    .toggle input {
+      display: none;
+    }
+
+    .toggle-slider {
+      width: 32px;
+      height: 18px;
+      border-radius: 999px;
+      background: #111827;
+      border: 1px solid #4b5563;
+      position: relative;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .toggle-slider::before {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      top: 1px;
+      left: 1px;
+      transition: transform 0.15s ease;
+    }
+
+    .toggle input:checked + .toggle-slider {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .toggle input:checked + .toggle-slider::before {
+      transform: translateX(13px);
+    }
+
+    .btn-row-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      margin-top: 2px;
+    }
+
+    .btn-group-left,
+    .btn-group-right {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+      text-decoration: none;
+      color: #e5e7eb;
+      background: #111827;
+      border: 1px solid #374151;
+      transition: background 0.15s ease, transform 0.05s ease,
+                  box-shadow 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn span.icon {
+      font-size: 16px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      border-color: transparent;
+      box-shadow: 0 12px 26px rgba(37,99,235,0.45);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #60a5fa, var(--accent-strong));
+    }
+
+    .btn-outline {
+      background: #020617;
+    }
+
+    .btn-ghost {
+      background: rgba(15,23,42,0.7);
+      border-style: dashed;
+      border-color: #4b5563;
+      font-weight: 400;
+      font-size: 12px;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .status-area {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: #020617;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      padding: 8px 10px;
+      max-height: 150px;
+      overflow-y: auto;
+      white-space: pre-line;
+    }
+
+    .status-line {
+      margin: 2px 0;
+    }
+
+    footer {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #6b7280;
+      text-align: right;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 16px 8px 24px;
+      }
+
+      .card {
+        padding: 18px 14px 16px;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .list-header {
+        display: none;
+      }
+
+      .row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 6px;
+      }
+
+      .row-right {
+        justify-content: space-between;
+      }
+
+      .btn-row-main {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-group-left,
+      .btn-group-right {
+        justify-content: flex-start;
+      }
+
+      .btn {
+        flex: 1;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="card">
+    <div class="header">
+      <div class="title-block">
+        <h1>Lee Downloader Web</h1>
+        <p>여러 링크를 한 번에 넣고, 해상도와 MP3 여부만 골라 심플하게 다운로드하는 웹 앱</p>
+      </div>
+      <div class="beta-badge">🧪 Web App · Beta</div>
+    </div>
+
+    <div class="hint">
+      ▸ 각 줄에 하나씩 링크 입력 → 해상도와 <strong>오디오만 (MP3)</strong> 옵션 선택 → <strong>다운로드 시작</strong> 클릭<br/>
+      ▸ 실제 다운로드는 <strong>서버(yt-dlp)</strong>가 처리하고, 이 페이지는 UI + 요청만 담당합니다.
+    </div>
+
+    <div class="list-header">
+      <div>영상 / 재생목록 링크</div>
+      <div>해상도</div>
+      <div style="text-align:right;">옵션</div>
+    </div>
+
+    <div id="rows" class="rows"></div>
+
+    <div class="btn-row-main">
+      <div class="btn-group-left">
+        <button id="addRowBtn" class="btn btn-outline" type="button">
+          <span class="icon">➕</span>
+          <span>링크 추가</span>
+        </button>
+        <button id="clearRowsBtn" class="btn btn-ghost" type="button">
+          <span>모두 지우기</span>
+        </button>
+      </div>
+      <div class="btn-group-right">
+        <button id="startBtn" class="btn btn-primary" type="button">
+          <span class="icon">⬇️</span>
+          <span>다운로드 시작</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="status" class="status-area">
+      <strong>대기 중…</strong> 링크와 옵션을 입력한 뒤 [다운로드 시작]을 눌러줘.
+    </div>
+  </div>
+
+  <footer>
+    Lee Downloader Web UI · made by CG91 · 백엔드는 yt-dlp 기반
+  </footer>
+</div>
+
+<script>
+  const API_BASE = "YOUR_API_URL_HERE"; // 나중에 진짜 서버 주소로 교체할 부분
+
+  const rowsContainer = document.getElementById("rows");
+  const addRowBtn = document.getElementById("addRowBtn");
+  const clearRowsBtn = document.getElementById("clearRowsBtn");
+  const startBtn = document.getElementById("startBtn");
+  const statusBox = document.getElementById("status");
+
+  const RES_OPTIONS = [
+    { value: "auto", label: "Auto (최고 화질)" },
+    { value: "2160", label: "2160p (4K)" },
+    { value: "1440", label: "1440p" },
+    { value: "1080", label: "1080p" },
+    { value: "720", label: "720p" },
+    { value: "480", label: "480p" },
+    { value: "360", label: "360p" }
+  ];
+
+  function createRow(urlValue = "") {
+    const row = document.createElement("div");
+    row.className = "row";
+
+    const urlInput = document.createElement("input");
+    urlInput.type = "text";
+    urlInput.placeholder = "https:// 또는 http:// 로 시작하는 영상/재생목록 주소";
+    urlInput.value = urlValue;
+
+    const select = document.createElement("select");
+    RES_OPTIONS.forEach(opt => {
+      const o = document.createElement("option");
+      o.value = opt.value;
+      o.textContent = opt.label;
+      select.appendChild(o);
+    });
+
+    const right = document.createElement("div");
+    right.className = "row-right";
+
+    const toggleLabel = document.createElement("label");
+    toggleLabel.className = "toggle";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+
+    const slider = document.createElement("span");
+    slider.className = "toggle-slider";
+
+    const toggleText = document.createElement("span");
+    toggleText.textContent = "오디오만 (MP3)";
+
+    toggleLabel.appendChild(checkbox);
+    toggleLabel.appendChild(slider);
+    toggleLabel.appendChild(toggleText);
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "btn btn-ghost";
+    removeBtn.innerHTML = "✕";
+
+    removeBtn.addEventListener("click", () => {
+      row.remove();
+      if (rowsContainer.children.length === 0) {
+        addRowIfEmpty();
+      }
+    });
+
+    right.appendChild(toggleLabel);
+    right.appendChild(removeBtn);
+
+    row.appendChild(urlInput);
+    row.appendChild(select);
+    row.appendChild(right);
+
+    return row;
+  }
+
+  function addRowIfEmpty() {
+    if (rowsContainer.children.length === 0) {
+      rowsContainer.appendChild(createRow());
+    }
+  }
+
+  addRowBtn.addEventListener("click", () => {
+    rowsContainer.appendChild(createRow());
+  });
+
+  clearRowsBtn.addEventListener("click", () => {
+    rowsContainer.innerHTML = "";
+    addRowIfEmpty();
+    setStatus("모든 행을 지웠어. 새 링크를 입력해줘.");
+  });
+
+  function setStatus(textLines) {
+    if (Array.isArray(textLines)) {
+      statusBox.innerHTML = textLines.map(t => `<div class="status-line">${t}</div>`).join("");
+    } else {
+      statusBox.innerHTML = `<div class="status-line">${textLines}</div>`;
+    }
+  }
+
+  async function downloadOne(job, index, total) {
+    setStatus(`(${index+1}/${total}) 서버에 다운로드 요청 중…`);
+
+    const res = await fetch(API_BASE + "/api/download", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(job),
+    });
+
+    if (!res.ok) {
+      let msg = "";
+      try {
+        const err = await res.json();
+        msg = err.error || JSON.stringify(err);
+      } catch {
+        msg = res.statusText;
+      }
+      setStatus(`(${index+1}/${total}) 에러: ${msg}`);
+      return;
+    }
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `lee_downloader_${index+1}.${job.mp3Only ? "mp3" : "mp4"}`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
+    setStatus(`(${index+1}/${total}) 다운로드 완료! 다음 항목으로 진행 중…`);
+  }
+
+  startBtn.addEventListener("click", async () => {
+    const jobs = [];
+
+    Array.from(rowsContainer.children).forEach((row) => {
+      const url = row.querySelector('input[type="text"]').value.trim();
+      if (!url) return;
+
+      const resolution = row.querySelector("select").value;
+      const mp3Only = row.querySelector('input[type="checkbox"]').checked;
+
+      jobs.push({ url, resolution, mp3Only });
+    });
+
+    if (!jobs.length) {
+      setStatus("다운로드할 링크가 없어. 한 줄 이상 입력해줘.");
+      return;
+    }
+
+    if (API_BASE === "YOUR_API_URL_HERE") {
+      setStatus("⚠ 아직 서버 주소(API_BASE)가 설정되지 않았어요. 백엔드 서버 URL을 넣어야 실제 다운로드가 됩니다.");
+      return;
+    }
+
+    startBtn.disabled = true;
+    addRowBtn.disabled = true;
+    clearRowsBtn.disabled = true;
+
+    setStatus(`총 ${jobs.length}개 항목 다운로드 시작…`);
+
+    for (let i = 0; i < jobs.length; i++) {
+      try {
+        await downloadOne(jobs[i], i, jobs.length);
+      } catch (e) {
+        console.error(e);
+        setStatus(`(${i+1}/${jobs.length}) 알 수 없는 에러 발생: ${e}`);
+      }
+    }
+
+    setStatus(`모든 작업 완료! 총 ${jobs.length}개 항목에 대한 다운로드 요청이 처리되었습니다.`);
+    startBtn.disabled = false;
+    addRowBtn.disabled = false;
+    clearRowsBtn.disabled = false;
+  });
+
+  addRowIfEmpty();
+</script>
+</body>
+</html>
